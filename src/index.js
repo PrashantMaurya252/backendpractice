@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { DB_NAME } from "./constants.js";
 import express from "express";
 import connectDB from "./db/index.js";
+import { app } from "./app.js";
 
 dotenv.config({
     path:'./env'
@@ -39,7 +40,7 @@ const app= express()
             throw error
         })
         app.listen(process.env.PORT,()=>{
-            console.log(`App is listening at port ${process.env.PORT}`)
+            console.log(`app is listening at port ${process.env.PORT}`)
         })
     } catch (error) {
         console.log("ERROR :",error)
