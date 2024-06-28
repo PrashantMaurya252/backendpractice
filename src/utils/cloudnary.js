@@ -1,4 +1,4 @@
-import {v2 as cloudnary} from 'cloudnary'
+import {v2 as cloudnary} from 'cloudinary'
 import fs from 'fs'
 
 cloudnary.config({
@@ -11,14 +11,28 @@ const uploadOnCloudinary=async(localFilePath)=>{
     try {
         if(!localFilePath) return null
         // upload the file on cloudinary
-       const response= await cloudinary.uploader.upload(localFilePath,{
+       const response= await cloudnary.uploader.upload(localFilePath,{
             resource_type:"auto"
         })
+        console.log(response)
         // file has been uploaded successfully
-        console.log("file is uploaded on cloudinary",response.url)
+        // console.log("file is uploaded on cloudinary",response.url)
+        console.log(localFilePath)
+        if (fs.existsSync(localFilePath)) {
+            fs.unlinkSync(localFilePath);
+        } else {
+            console.log('File does not exist, cannot delete.');
+        }
         return response
     } catch (error) {
-        fs.unlinkSync(localFilePath)  // remove the locally saved temporary file as the upload operation got failed
+        console.log(error,'error')
+        console.log(localFilePath,"catch")
+        if (fs.existsSync(localFilePath)) {
+            fs.unlinkSync(localFilePath);
+        } else {
+            console.log('File does not exist, cannot delete.');
+        }  // remove the locally saved temporary file as the upload operation got failed
+        return null
     }
 }
 
